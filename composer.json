@@ -11,7 +11,7 @@
         "name": "autumndev",
         "email": "sayhi@autumndev.co.uk"
     }],
-    "minimum-stability": "dev",
+    "minimum-stability": "alpha",
     "autoload": {
         "psr-0": {
             "AutumnDev": "src/"
