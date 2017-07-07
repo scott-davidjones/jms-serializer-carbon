@@ -1,0 +1,20 @@
+{
+    "name": "AutumnDev/jmsSerializerCarbon",
+    "description": "Carbon Serialization or JSM Serializer",
+    "type": "library",
+    "require": {
+        "jms/serializer": "^1.7",
+        "nesbot/carbon": "^1.22"
+    },
+    "license": "GNU General Public License v2.0",
+    "authors": [{
+        "name": "autumndev",
+        "email": "sayhi@autumndev.co.uk"
+    }],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "AutumnDev": "src/"
+        }
+    }
+}
