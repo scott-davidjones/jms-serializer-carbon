@@ -10,4 +10,19 @@ $builder
     })
 ;
 ```
-
+# Symfony2
+You will need to register a new service in order to utilise the Carbon serilisation:
+```yml
+carbon_handler:
+        class: AutumnDev\JMS\CarbonHandler
+        tags:
+            - { name: jms_serializer.subscribing_handler }
+```
+# Usage
+In order to use the serialisation you must tag your entities thusly:
+```php
+    /**
+    * @Type("Carbon")
+    */
+    public $date;
+```
