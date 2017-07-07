@@ -1,5 +1,5 @@
 {
-    "name": "AutumnDev/jmsSerializerCarbon",
+    "name": "autumndev/jms-serializer-carbon",
     "description": "Carbon Serialization or JSM Serializer",
     "type": "library",
     "require": {
