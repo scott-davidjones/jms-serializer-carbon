@@ -3,15 +3,15 @@
     "description": "Carbon Serialization or JSM Serializer",
     "type": "library",
     "require": {
-        "jms/serializer": "^1.7",
-        "nesbot/carbon": "^1.22"
+        "jms/serializer": "^2.0",
+        "nesbot/carbon": "^2.5"
     },
     "license": "GNU General Public License v2.0",
     "authors": [{
         "name": "autumndev",
         "email": "sayhi@autumndev.co.uk"
     }],
-    "minimum-stability": "alpha",
+    "minimum-stability": "RC",
     "autoload": {
         "psr-0": {
             "AutumnDev": "src/"
