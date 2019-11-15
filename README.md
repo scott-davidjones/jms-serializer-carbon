@@ -6,7 +6,7 @@ To instal and use the package please install as per the [JMS documentation](http
 ```php
 $builder
     ->configureHandlers(function(JMS\Serializer\Handler\HandlerRegistry $registry) {
-        $registry->registerSubscribingHandler(new MyHandler());
+        $registry->registerSubscribingHandler(new \AutumnDev\JMS\CarbonHandler());
     })
 ;
 ```
