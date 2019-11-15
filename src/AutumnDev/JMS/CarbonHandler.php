@@ -7,6 +7,8 @@ use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\VisitorInterface;
 use JMS\Serializer\JsonSerializationVisitor;
 use JMS\Serializer\XmlSerializationVisitor;
+use JMS\Serializer\JsonDeserializationVisitor;
+use JMS\Serializer\XmlDeserializationVisitor;
 use JMS\Serializer\Context;
 use JMS\Serializer\Handler\DateHandler;
 use Carbon\Carbon;
@@ -93,7 +95,7 @@ class CarbonHandler implements SubscribingHandlerInterface
 
     public function deserializeCarbonFromJson(JsonDeserializationVisitor $visitor, $data, array $type)
     {
-        if ($this->isDataXmlNull($data)) {
+        if (empty($data)) {
             return null;
         }
 
@@ -126,5 +128,11 @@ class CarbonHandler implements SubscribingHandlerInterface
     private function getFormat(array $type)
     {
         return isset($type['params'][0]) ? $type['params'][0] : $this->defaultFormat;
+    }
+    
+    private function isDataXmlNull($data)
+    {
+        $attributes = $data->attributes('xsi', true);
+        return isset($attributes['nil'][0]) && (string)$attributes['nil'][0] === 'true';
     }
 }
