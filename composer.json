@@ -3,7 +3,7 @@
     "description": "Carbon Serialization or JSM Serializer",
     "type": "library",
     "require": {
-        "jms/serializer": "^2.0",
+        "jms/serializer": "^2.0 || ^3.0",
         "nesbot/carbon": "^2.5"
     },
     "license": "GNU General Public License v2.0",
