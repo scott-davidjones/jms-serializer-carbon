@@ -2,8 +2,9 @@
 
 namespace AutumnDev\JMS;
 
+use Carbon\CarbonImmutable;
+use JMS\Serializer\GraphNavigatorInterface;
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
-use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\VisitorInterface;
 use JMS\Serializer\JsonSerializationVisitor;
 use JMS\Serializer\XmlSerializationVisitor;
@@ -15,43 +16,52 @@ use Carbon\Carbon;
 use DateTimeImmutable;
 use DateTimeZone;
 use DateTime;
+use RuntimeException;
 
 class CarbonHandler implements SubscribingHandlerInterface
 {
-    public static function getSubscribingMethods()
-    {
-        $methods = array();
-        $deserialisationTypes = array('Carbon');
-        $serialisationTypes = array('Carbon');
 
-        foreach (array('json', 'xml', 'yml') as $format) {
+	/** @var bool|mixed */
+	private $xmlCData;
+	/** @var DateTimeZone */
+	private $defaultTimezone;
+	/** @var mixed|string */
+	private $defaultFormat;
+
+	public function __construct($defaultFormat = DateTime::ISO8601, $defaultTimezone = 'UTC', $xmlCData = true)
+	{
+		$this->defaultFormat = $defaultFormat;
+		$this->defaultTimezone = new DateTimeZone($defaultTimezone);
+		$this->xmlCData = $xmlCData;
+	}
+
+	public static function getSubscribingMethods()
+    {
+        $methods = [];
+        $deserialisationTypes = ['Carbon', 'CarbonImmutable'];
+        $serialisationTypes = ['Carbon', 'CarbonImmutable'];
+
+        foreach (['json', 'xml', 'yml'] as $format) {
 
             foreach ($deserialisationTypes as $type) {
                 $methods[] = [
                     'type'      => $type,
-                    'direction' => GraphNavigator::DIRECTION_DESERIALIZATION,
+                    'direction' => GraphNavigatorInterface::DIRECTION_DESERIALIZATION,
                     'format'    => $format,
                 ];
             }
 
             foreach ($serialisationTypes as $type) {
-                $methods[] = array(
+                $methods[] = [
                     'type' => $type,
                     'format' => $format,
-                    'direction' => GraphNavigator::DIRECTION_SERIALIZATION,
+                    'direction' => GraphNavigatorInterface::DIRECTION_SERIALIZATION,
                     'method' => 'serialize'.$type,
-                );
+                ];
             }
         }
 
         return $methods;
-    }
-
-    public function __construct($defaultFormat = DateTime::ISO8601, $defaultTimezone = 'UTC', $xmlCData = true)
-    {
-        $this->defaultFormat = $defaultFormat;
-        $this->defaultTimezone = new DateTimeZone($defaultTimezone);
-        $this->xmlCData = $xmlCData;
     }
 
     /**
@@ -82,6 +92,35 @@ class CarbonHandler implements SubscribingHandlerInterface
 
         return $visitor->visitString($date->format($this->getFormat($type)), $type, $context);
     }
+
+	/**
+	 * serializes carbon immutable object to ISO 8601 string for JSON
+	 * serialization
+	 *
+	 * @param XmlSerializationVisitor $visitor
+	 * @param CarbonImmutable $date
+	 * @param array $type
+	 * @param Context $context
+	 *
+	 * @return String
+	 */
+	public function serializeCarbonImmutable(
+		VisitorInterface $visitor,
+		CarbonImmutable $date,
+		array $type,
+		Context $context
+	) {
+		if ($visitor instanceof XmlSerializationVisitor && false === $this->xmlCData) {
+			return $visitor->visitSimpleString($date->format($this->getFormat($type)), $type, $context);
+		}
+
+		$format = $this->getFormat($type);
+		if ('U' === $format) {
+			return $visitor->visitInteger($date->format($format), $type, $context);
+		}
+
+		return $visitor->visitString($date->format($this->getFormat($type)), $type, $context);
+	}
 
     public function deserializeCarbonFromXml(XmlDeserializationVisitor $visitor, $data, array $type)
     {

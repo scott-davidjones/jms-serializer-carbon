@@ -3,6 +3,7 @@
     "description": "Carbon Serialization or JSM Serializer",
     "type": "library",
     "require": {
+        "php": "^7.1 || ^8.0",
         "jms/serializer": "^2.0 || ^3.0",
         "nesbot/carbon": "^2.5"
     },
