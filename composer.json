@@ -7,11 +7,13 @@
         "jms/serializer": "^2.0 || ^3.0",
         "nesbot/carbon": "^2.5"
     },
-    "license": "GNU General Public License v2.0",
-    "authors": [{
-        "name": "autumndev",
-        "email": "sayhi@autumndev.co.uk"
-    }],
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "autumndev",
+            "email": "sayhi@autumndev.co.uk"
+        }
+    ],
     "minimum-stability": "RC",
     "autoload": {
         "psr-0": {
