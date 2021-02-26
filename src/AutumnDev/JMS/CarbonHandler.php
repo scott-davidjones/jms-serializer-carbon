@@ -10,6 +10,7 @@ use JMS\Serializer\XmlSerializationVisitor;
 use JMS\Serializer\JsonDeserializationVisitor;
 use JMS\Serializer\XmlDeserializationVisitor;
 use JMS\Serializer\Context;
+use Carbon\CarbonImmutable;
 use Carbon\Carbon;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -36,8 +37,8 @@ class CarbonHandler implements SubscribingHandlerInterface
 	public static function getSubscribingMethods()
 	{
 		$methods = [];
-		$deserialisationTypes = ['Carbon', 'CarbonImmutable'];
-		$serialisationTypes = ['Carbon', 'CarbonImmutable'];
+		$deserialisationTypes = ['Carbon', 'CarbonImmutable', Carbon::class, CarbonImmutable::class];
+		$serialisationTypes = ['Carbon', 'CarbonImmutable', Carbon::class, CarbonImmutable::class];
 
 		foreach (['json', 'xml', 'yml'] as $format) {
 
