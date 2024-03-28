@@ -34,7 +34,7 @@ class CarbonHandler implements SubscribingHandlerInterface
 		$this->xmlCData = $xmlCData;
 	}
 
-	public static function getSubscribingMethods()
+	public static function getSubscribingMethods(): array
 	{
 		$methods = [];
 		$deserialisationTypes = ['Carbon', 'CarbonImmutable', Carbon::class, CarbonImmutable::class];
